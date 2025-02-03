@@ -21,9 +21,22 @@ public class UserService {
 
     public User registerUser(UserRequestDTO userRequestDTO) {
         User user = new User(userRequestDTO.getUsername(),
-                             userRequestDTO.getEmail(),
-                             userRequestDTO.getPassword());
+                userRequestDTO.getEmail(),
+                userRequestDTO.getPassword());
         return userRepository.save(user);
     }
 
+    public String loginUser(UserRequestDTO userRequestDTO) {
+        User user = userRepository.findAllByEmail(userRequestDTO.getEmail());
+        if (user != null) {
+            if (userRequestDTO.getEmail().equals(user.getEmail())
+                    && userRequestDTO.getPassword().equals(user.getPassword())) {
+                return "Logged in successfully";
+            } else {
+                return "Wrong email or password";
+            }
+        }
+        return "User doesnt exist";
+    }
 }
+
