@@ -19,6 +19,12 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 
+    public Category(String categoryName, String description) {
+        setCategoryName(categoryName);
+        setDescription(description);
+    }
+
+    public Category() {}
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
