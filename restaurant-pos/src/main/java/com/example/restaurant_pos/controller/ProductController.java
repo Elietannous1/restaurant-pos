@@ -27,4 +27,10 @@ public class ProductController {
         return productService.addProduct(productRequestDTO);
     }
 
+    @PostMapping("/remove")
+    @ResponseBody
+    public String removeProduct(@RequestParam Integer id) {
+        return productService.removeProduct(id);
+    }
+
 }

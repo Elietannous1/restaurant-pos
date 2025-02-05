@@ -34,4 +34,13 @@ public class ProductService {
         return productRepository.save(product);
 
     }
+
+    public String removeProduct(Integer productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        if(product.isPresent()) {
+            productRepository.delete(product.get());
+            return "Product removed successfully";
+        }
+        return "Product not found";
+    }
 }
