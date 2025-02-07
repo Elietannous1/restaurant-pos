@@ -1,6 +1,7 @@
 package com.example.restaurant_pos.controller;
 
 import com.example.restaurant_pos.model.Category;
+import com.example.restaurant_pos.model.Product;
 import com.example.restaurant_pos.model.request.CategoryRequestDTO;
 import com.example.restaurant_pos.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,12 @@ public class CategoryController {
     @ResponseBody
     public String deleteCategory(@RequestParam Integer id) {
         return categoryService.deleteCategory(id);
+    }
+
+    @GetMapping("/products/")
+    @ResponseBody
+    public List<Product> getAllProductsFromCategory(@RequestParam Integer id) {
+        return categoryService.getProductsFromCategory(id);
     }
 
 

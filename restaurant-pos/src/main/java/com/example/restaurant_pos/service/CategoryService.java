@@ -1,6 +1,7 @@
 package com.example.restaurant_pos.service;
 
 import com.example.restaurant_pos.model.Category;
+import com.example.restaurant_pos.model.Product;
 import com.example.restaurant_pos.model.request.CategoryRequestDTO;
 import com.example.restaurant_pos.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,11 @@ public class CategoryService {
             return "Category deleted";
         }
         return "Category not found";
+    }
+
+    public List<Product> getProductsFromCategory(Integer id) {
+        Category category = categoryRepository.findById(id).get();
+        List<Product> products = category.getProducts();
+        return products;
     }
 }
