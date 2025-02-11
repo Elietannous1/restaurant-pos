@@ -40,10 +40,17 @@ public class OrderController {
         return orderService.createOrder(orderRequestDTO);
     }
 
-    @GetMapping("/date")
+    @GetMapping("/date/day")
     @ResponseBody
-    public List<Order> getOrderForDay(@RequestParam String date) {
+    public List<Order> getOrdersForDay(@RequestParam String date) {
         LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
-        return orderService.getOrderByDay(parsedDate);
+        return orderService.getOrdersByDay(parsedDate);
+    }
+
+    @GetMapping("/date/month")
+    @ResponseBody
+    public List<Order> getOrdersForMonth(@RequestParam String date) {
+        LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+        return orderService.getOrdersbyMonth(parsedDate);
     }
 }

@@ -35,11 +35,25 @@ public class OrderService {
         }
     }
 
-    public List<Order> getOrderByDay(LocalDate date){
+    public List<Order> getOrdersByDay(LocalDate date){
         LocalDateTime startOfDay = date.atStartOfDay();  // 2025-02-10T00:00:00
         LocalDateTime endOfDay = date.atTime(LocalTime.MAX); // 2025-02-10T23:59:59
         return orderRepository.findByOrderDateBetween(startOfDay, endOfDay);
     }
+
+    public List<Order> getOrdersbyMonth(LocalDate parsedDate) {
+        // Extract year and month from the provided date
+        int year = parsedDate.getYear();
+        int month = parsedDate.getMonthValue();
+
+        // Define start and end of the month
+        LocalDateTime startOfMonth = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        LocalDateTime endOfMonth = startOfMonth.withDayOfMonth(parsedDate.lengthOfMonth()).withHour(23).withMinute(59).withSecond(59);
+
+        // Fetch orders within the given month range
+        return orderRepository.findByOrderDateBetween(startOfMonth, endOfMonth);
+    }
+
 
     public Order createOrder(OrderRequestDTO orderRequestDTO) {
         Order order = new Order();
