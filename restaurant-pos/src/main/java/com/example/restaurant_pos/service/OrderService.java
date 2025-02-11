@@ -10,6 +10,9 @@ import com.example.restaurant_pos.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class OrderService {
     ProductRepository productRepository;
 
     @Autowired
-     OrderRepository orderRepository;
+    OrderRepository orderRepository;
 
     public List<Order> getOrder(Integer id){
         List<Order> orders = new ArrayList<>();
@@ -30,6 +33,12 @@ public class OrderService {
             orders.add(orderRepository.findById(id).get());
             return orders;
         }
+    }
+
+    public List<Order> getOrderByDay(LocalDate date){
+        LocalDateTime startOfDay = date.atStartOfDay();  // 2025-02-10T00:00:00
+        LocalDateTime endOfDay = date.atTime(LocalTime.MAX); // 2025-02-10T23:59:59
+        return orderRepository.findByOrderDateBetween(startOfDay, endOfDay);
     }
 
     public Order createOrder(OrderRequestDTO orderRequestDTO) {
