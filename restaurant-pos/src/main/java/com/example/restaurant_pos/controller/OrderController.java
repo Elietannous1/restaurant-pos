@@ -53,4 +53,18 @@ public class OrderController {
         LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         return orderService.getOrdersbyMonth(parsedDate);
     }
+
+    @GetMapping("/income")
+    @ResponseBody
+    public String getIncome(@RequestParam String date, @RequestParam String period) {
+        LocalDate parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
+        if(period.equalsIgnoreCase("day")){
+            return orderService.getDailyIncome(parsedDate);
+        } else if (period.equalsIgnoreCase("month")){
+            return orderService.getMonthlyIncome(parsedDate);
+        } else {
+            throw new IllegalArgumentException("Invalid period. Please specify 'day' or 'month'.");
+        }
+
+    }
 }

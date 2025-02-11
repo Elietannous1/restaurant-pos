@@ -54,6 +54,24 @@ public class OrderService {
         return orderRepository.findByOrderDateBetween(startOfMonth, endOfMonth);
     }
 
+    public String getDailyIncome(LocalDate parsedDate){
+        List<Order> orders = getOrdersByDay(parsedDate);
+        double total = 0;
+        for (Order orderItem : orders) {
+            total += orderItem.getTotalPrice();
+        }
+        return "Todays Income Is: " + total;
+    }
+
+    public String getMonthlyIncome(LocalDate parsedDate){
+        List<Order> orders = getOrdersbyMonth(parsedDate);
+        double total = 0;
+        for (Order orderItem : orders) {
+            total += orderItem.getTotalPrice();
+        }
+        return "This Months Income Is: " + total;
+    }
+
 
     public Order createOrder(OrderRequestDTO orderRequestDTO) {
         Order order = new Order();
