@@ -16,17 +16,16 @@ public class OrderController {
     @Autowired
     OrderService orderService;
 
+
+    @GetMapping("")
+    @ResponseBody
+    public List<Order> getAllOrders(@RequestParam(required = false) Integer id){
+        return orderService.getOrder(id);
+    }
+
     @PostMapping("/create")
     @ResponseBody
     public Order createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
         return orderService.createOrder(orderRequestDTO);
     }
-
-    @GetMapping("")
-    @ResponseBody
-    public List<Order> getAllOrders(){
-        return orderService.getAllOrders();
-    }
-
-
 }

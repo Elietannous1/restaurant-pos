@@ -22,8 +22,14 @@ public class OrderService {
     @Autowired
      OrderRepository orderRepository;
 
-    public List<Order> getAllOrders(){
-        return orderRepository.findAll();
+    public List<Order> getOrder(Integer id){
+        List<Order> orders = new ArrayList<>();
+        if(id == null) {
+            return orderRepository.findAll();
+        } else {
+            orders.add(orderRepository.findById(id).get());
+            return orders;
+        }
     }
 
     public Order createOrder(OrderRequestDTO orderRequestDTO) {
