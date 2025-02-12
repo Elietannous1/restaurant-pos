@@ -72,6 +72,13 @@ public class OrderService {
         return "This Months Income Is: " + total;
     }
 
+    public void deleteOrder(Integer id){
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        orderRepository.delete(order);
+    }
+
 
     public Order createOrder(OrderRequestDTO orderRequestDTO) {
         Order order = new Order();

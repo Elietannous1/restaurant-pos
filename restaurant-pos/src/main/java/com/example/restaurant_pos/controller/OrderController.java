@@ -4,21 +4,15 @@ import com.example.restaurant_pos.model.Order;
 import com.example.restaurant_pos.model.request.OrderRequestDTO;
 import com.example.restaurant_pos.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-/*
-TODO:Endpoints Covered:
-✅ Create an order
-✅ Get all orders
-✅ Get order by ID
-✅ Get orders for a specific day
-✅ Calculate daily profit
-✅ Cancel an order
- */
+
 
 @Controller
 @RequestMapping("/order")
@@ -65,6 +59,17 @@ public class OrderController {
         } else {
             throw new IllegalArgumentException("Invalid period. Please specify 'day' or 'month'.");
         }
-
     }
+
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public ResponseEntity<String> deleteOrder(@RequestParam Integer id) {
+        try {
+            orderService.deleteOrder(id);
+            return ResponseEntity.ok("Order with ID " + id + " has been deleted successfully.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found.");
+        }
+    }
+
 }
