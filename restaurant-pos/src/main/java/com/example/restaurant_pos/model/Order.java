@@ -15,10 +15,14 @@ public class Order {
     private LocalDateTime orderDate;
     private double totalPrice;
 
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus = OrderStatus.PENDING; // Default status
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
     public Order(){}
+
     public Order(LocalDateTime orderDate, double totalPrice, List<OrderItem> orderItems) {
         setOrderDate(orderDate);
         setTotalPrice(totalPrice);
@@ -56,5 +60,13 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

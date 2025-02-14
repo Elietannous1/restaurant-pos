@@ -1,6 +1,7 @@
 package com.example.restaurant_pos.controller;
 
 import com.example.restaurant_pos.model.Order;
+import com.example.restaurant_pos.model.OrderStatus;
 import com.example.restaurant_pos.model.request.OrderRequestDTO;
 import com.example.restaurant_pos.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
+// TODO: Add status to order entity and filtering(if there is a lot of pending orders.)
 @Controller
 @RequestMapping("/order")
-public class OrderController {
+public class OrderController extends BaseController {
 
     @Autowired
     OrderService orderService;
@@ -70,6 +71,13 @@ public class OrderController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order not found.");
         }
+    }
+
+    @PutMapping("/update/status")
+    @ResponseBody
+    public ResponseEntity<Order> updateOrderStatus(@RequestParam Integer id, @RequestParam String inputStatus) {
+        OrderStatus status = validateOrderStatus(inputStatus);
+        return ResponseEntity.ok(orderService.updateStatus(id, status));
     }
 
 }

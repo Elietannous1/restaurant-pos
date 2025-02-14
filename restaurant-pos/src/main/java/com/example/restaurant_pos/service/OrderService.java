@@ -2,12 +2,14 @@ package com.example.restaurant_pos.service;
 
 import com.example.restaurant_pos.model.Order;
 import com.example.restaurant_pos.model.OrderItem;
+import com.example.restaurant_pos.model.OrderStatus;
 import com.example.restaurant_pos.model.Product;
 import com.example.restaurant_pos.model.request.OrderItemRequestDTO;
 import com.example.restaurant_pos.model.request.OrderRequestDTO;
 import com.example.restaurant_pos.repository.OrderRepository;
 import com.example.restaurant_pos.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -79,6 +81,19 @@ public class OrderService {
         orderRepository.delete(order);
     }
 
+    public Order updateStatus(Integer id, OrderStatus status){
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        if(order.getOrderStatus() == OrderStatus.COMPLETED){
+            throw new RuntimeException("Cannot update a completed order.");
+        }
+
+        if(order.getOrderStatus() == OrderStatus.CANCELLED){
+            throw new RuntimeException("Cannot update a cancelled order.");
+        }
+        order.setOrderStatus(status);
+        return orderRepository.save(order);
+    }
+
 
     public Order createOrder(OrderRequestDTO orderRequestDTO) {
         Order order = new Order();
@@ -102,6 +117,7 @@ public class OrderService {
         order.setOrderDate(orderRequestDTO.getOrderDate());
         order.setTotalPrice(totalPrice);
         order.setOrderItems(orderItems);
+        order.setOrderStatus(OrderStatus.PENDING);
 
         return orderRepository.save(order);
     }
