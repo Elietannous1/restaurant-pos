@@ -1,5 +1,7 @@
 package com.example.restaurant_pos.model.request;
 
+import com.example.restaurant_pos.model.OrderStatus;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +9,7 @@ public class OrderRequestDTO {
 
     private LocalDateTime orderDate;
     private List<OrderItemRequestDTO> orderItems;
+    private String orderStatus;
 
     public LocalDateTime getOrderDate() {
         return orderDate;
@@ -22,5 +25,13 @@ public class OrderRequestDTO {
 
     public void setOrderItems(List<OrderItemRequestDTO> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

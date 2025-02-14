@@ -81,18 +81,44 @@ public class OrderService {
         orderRepository.delete(order);
     }
 
-    public Order updateStatus(Integer id, OrderStatus status){
-        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
-        if(order.getOrderStatus() == OrderStatus.COMPLETED){
+    public Order updateOrder(Integer id, OrderStatus status, OrderRequestDTO orderRequestDTO) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        if (order.getOrderStatus() == OrderStatus.COMPLETED) {
             throw new RuntimeException("Cannot update a completed order.");
         }
 
-        if(order.getOrderStatus() == OrderStatus.CANCELLED){
+        if (order.getOrderStatus() == OrderStatus.CANCELLED) {
             throw new RuntimeException("Cannot update a cancelled order.");
         }
+
+        // Update Order Items
+        List<OrderItem> updatedOrderItems = new ArrayList<>();
+        double totalPrice = 0.0;
+
+        for (OrderItemRequestDTO itemDTO : orderRequestDTO.getOrderItems()) {
+            Product product = productRepository.findById(itemDTO.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
+
+            double itemTotal = product.getPrice() * itemDTO.getQuantity();
+            totalPrice += itemTotal;
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProduct(product);
+            orderItem.setQuantity(itemDTO.getQuantity());
+            orderItem.setOrder(order);
+
+            updatedOrderItems.add(orderItem);
+        }
+        order.setOrderDate(orderRequestDTO.getOrderDate());
+        order.setOrderItems(updatedOrderItems);
+        order.setTotalPrice(totalPrice);
         order.setOrderStatus(status);
+
         return orderRepository.save(order);
     }
+
 
 
     public Order createOrder(OrderRequestDTO orderRequestDTO) {
