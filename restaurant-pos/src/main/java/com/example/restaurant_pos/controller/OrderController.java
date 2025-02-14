@@ -76,7 +76,7 @@ public class OrderController extends BaseController {
     @PutMapping("/update/status")
     @ResponseBody
     public ResponseEntity<Order> updateOrderStatus(@RequestParam Integer id, @RequestParam String inputStatus) {
-        OrderStatus status = validateOrderStatus(inputStatus);
+        OrderStatus status = validateOrderStatus(inputStatus.toUpperCase());
         return ResponseEntity.ok(orderService.updateStatus(id, status));
     }
 
