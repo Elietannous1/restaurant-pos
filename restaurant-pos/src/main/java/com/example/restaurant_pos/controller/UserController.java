@@ -1,7 +1,6 @@
 package com.example.restaurant_pos.controller;
 
 
-import com.example.restaurant_pos.model.User;
 import com.example.restaurant_pos.model.request.JwtDTO;
 import com.example.restaurant_pos.model.request.UserRequestDTO;
 import com.example.restaurant_pos.service.UserService;
@@ -36,5 +35,12 @@ public class UserController {
             throw new Exception("Invalid email");
 
         return userService.loginUser(userRequestDTO);
+    }
+
+    @PostMapping("/refresh-token")
+    @ResponseBody
+    public JwtDTO refreshToken(@RequestBody UserRequestDTO userRequestDTO){
+
+       return userService.refreshToken(userRequestDTO);
     }
 }

@@ -1,9 +1,6 @@
 package com.example.restaurant_pos.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +16,9 @@ public class User implements UserDetails {
     private String email;
     private String username;
     private String password;
+
+    @Column(unique = true, length = 500)
+    private String refreshToken;
 
     public User(String username, String email, String password) {
         setUsername(username);
@@ -85,5 +85,13 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

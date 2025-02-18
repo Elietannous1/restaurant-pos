@@ -6,7 +6,7 @@ public class UserRequestDTO {
     private String username;
     private String password;
     private String email;
-
+    private String refreshToken;
 
     public String getEmail() {
         return email;
@@ -30,5 +30,13 @@ public class UserRequestDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

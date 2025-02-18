@@ -39,9 +39,10 @@ public class UserService {
                 userRequestDTO.getEmail(),
                 passwordEncoder.encode(userRequestDTO.getPassword()));
         userRepository.save(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
         Token token = new Token(jwtService.generateToken(user), userRepository.findAllByEmail(user.getEmail()).get());
         jwtRepository.save(token);
-        return new JwtDTO(token.getToken());
+        return new JwtDTO(token.getToken(), refreshToken);
     }
 
     public JwtDTO loginUser(UserRequestDTO userRequestDTO){
@@ -53,9 +54,24 @@ public class UserService {
         authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         revokeToken(user);
         Token token = new Token(jwtService.generateToken(user), userRepository.findAllByEmail(user.getEmail()).get());
+        String refreshToken = jwtService.generateRefreshToken(user);
         jwtRepository.save(token);
-        return new JwtDTO(token.getToken());
+        return new JwtDTO(token.getToken(), refreshToken);
 
+    }
+
+    public JwtDTO refreshToken(UserRequestDTO userRequestDTO){
+        User user = userRepository.findAllByEmail(userRequestDTO.getEmail()).get();
+        Token token = new Token();
+
+        if(jwtService.isTokenValid(userRequestDTO.getRefreshToken(), user)){
+            revokeToken(user);
+            token = new Token(jwtService.generateToken(user), userRepository.findAllByEmail(user.getEmail()).get());
+            jwtRepository.save(token);
+        }
+
+        JwtDTO jwtDTO = new JwtDTO(token.getToken(),userRequestDTO.getRefreshToken());
+        return jwtDTO;
     }
 
     public void revokeToken(User user){

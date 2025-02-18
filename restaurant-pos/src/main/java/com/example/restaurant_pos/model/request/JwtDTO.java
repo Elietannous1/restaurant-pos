@@ -1,12 +1,13 @@
 package com.example.restaurant_pos.model.request;
 
-import com.example.restaurant_pos.model.Token;
 
 public class JwtDTO {
     private String token;
+    private String refreshToken;
 
-    public JwtDTO(String token) {
+    public JwtDTO(String token, String refreshToken) {
         setToken(token);
+        setRefreshToken(refreshToken);
     }
 
     public String getToken() {
@@ -15,5 +16,13 @@ public class JwtDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
