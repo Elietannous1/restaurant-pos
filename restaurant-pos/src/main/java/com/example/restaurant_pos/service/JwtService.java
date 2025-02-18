@@ -21,9 +21,11 @@ public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
     @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
+    private String jwtExpiration;
     @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshExpiration;
+    private String refreshExpiration;
+
+
 
     public JwtService(){}
 
@@ -56,14 +58,15 @@ public class JwtService {
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
-            long expiration
+            String expiration
     ) {
+        long expirationDate = Long.parseLong(expiration) * 1000;
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 *60))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationDate))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
