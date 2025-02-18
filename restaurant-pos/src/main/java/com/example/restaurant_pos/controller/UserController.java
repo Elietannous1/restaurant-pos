@@ -2,6 +2,7 @@ package com.example.restaurant_pos.controller;
 
 
 import com.example.restaurant_pos.model.User;
+import com.example.restaurant_pos.model.request.JwtDTO;
 import com.example.restaurant_pos.model.request.UserRequestDTO;
 import com.example.restaurant_pos.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,20 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseBody
-    public User registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public JwtDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) throws Exception {
+        if(userRequestDTO.getEmail().isEmpty() || userRequestDTO.getPassword().isEmpty()
+                || userRequestDTO.getUsername().isEmpty()) {
+            throw new Exception("Email and password should be provided");
+        }
         return userService.registerUser(userRequestDTO);
     }
 
     @PostMapping("/login")
     @ResponseBody
-    public String loginUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public JwtDTO loginUser(@RequestBody UserRequestDTO userRequestDTO) throws Exception {
+        if(userRequestDTO.getEmail().isEmpty())
+            throw new Exception("Invalid email");
+
         return userService.loginUser(userRequestDTO);
     }
 }

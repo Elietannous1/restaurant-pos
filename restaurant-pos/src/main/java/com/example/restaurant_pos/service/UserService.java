@@ -1,12 +1,19 @@
 package com.example.restaurant_pos.service;
 
+import com.example.restaurant_pos.model.Token;
 import com.example.restaurant_pos.model.User;
+import com.example.restaurant_pos.model.request.JwtDTO;
 import com.example.restaurant_pos.model.request.UserRequestDTO;
+import com.example.restaurant_pos.repository.JwtRepository;
 import com.example.restaurant_pos.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -18,23 +25,47 @@ public class UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public User registerUser(UserRequestDTO userRequestDTO) {
+    @Autowired
+    JwtService jwtService;
+
+    @Autowired
+    private JwtRepository jwtRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    public JwtDTO registerUser(UserRequestDTO userRequestDTO) {
         User user = new User(userRequestDTO.getUsername(),
                 userRequestDTO.getEmail(),
                 passwordEncoder.encode(userRequestDTO.getPassword()));
-        return userRepository.save(user);
+        userRepository.save(user);
+        Token token = new Token(jwtService.generateToken(user), userRepository.findAllByEmail(user.getEmail()).get());
+        jwtRepository.save(token);
+        return new JwtDTO(token.getToken());
     }
 
-    public String loginUser(UserRequestDTO userRequestDTO) {
-        User user = userRepository.findAllByEmail(userRequestDTO.getEmail());
-        if (user != null) {
-            if (passwordEncoder.matches(userRequestDTO.getPassword(), user.getPassword())) {
-                return "Logged in successfully";
-            } else {
-                return "Wrong email or password";
+    public JwtDTO loginUser(UserRequestDTO userRequestDTO){
+        User user = userRepository.findAllByEmail(userRequestDTO.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(user.getUsername(), userRequestDTO.getPassword());
+        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        revokeToken(user);
+        Token token = new Token(jwtService.generateToken(user), userRepository.findAllByEmail(user.getEmail()).get());
+        jwtRepository.save(token);
+        return new JwtDTO(token.getToken());
+
+    }
+
+    public void revokeToken(User user){
+        List<Token> tokens = jwtRepository.findByUserAndExpiredAndRevoked(user, false, false);
+        if(tokens.size() > 0) {
+            for (Token token : tokens) {
+                token.setRevoked(true);
+                token.setExpired(true);
             }
         }
-        return "User doesnt exist";
+        jwtRepository.saveAll(tokens);
     }
 }
-
