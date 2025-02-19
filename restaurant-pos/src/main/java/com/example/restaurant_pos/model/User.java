@@ -20,6 +20,9 @@ public class User implements UserDetails {
     @Column(unique = true, length = 500)
     private String refreshToken;
 
+    private Integer recoveryCode;
+    private boolean recoveryVerified;
+
     public User(String username, String email, String password) {
         setUsername(username);
         setEmail(email);
@@ -93,5 +96,21 @@ public class User implements UserDetails {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public Integer getRecoveryCode() {
+        return recoveryCode;
+    }
+
+    public void setRecoveryCode(Integer recoveryCode) {
+        this.recoveryCode = recoveryCode;
+    }
+
+    public boolean isRecoveryVerified() {
+        return recoveryVerified;
+    }
+
+    public void setRecoveryVerified(boolean recoveryVerified) {
+        this.recoveryVerified = recoveryVerified;
     }
 }

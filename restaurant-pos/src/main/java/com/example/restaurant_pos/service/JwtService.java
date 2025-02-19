@@ -20,10 +20,13 @@ public class JwtService {
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
+
     @Value("${application.security.jwt.expiration}")
-    private String jwtExpiration;
+    private long jwtExpiration;  // Now it's a long
+
     @Value("${application.security.jwt.refresh-token.expiration}")
-    private String refreshExpiration;
+    private long refreshExpiration;  // Now it's a long
+
 
 
 
@@ -58,15 +61,14 @@ public class JwtService {
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
-            String expiration
+            long expiration
     ) {
-        long expirationDate = Long.parseLong(expiration) * 1000;
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expirationDate))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
