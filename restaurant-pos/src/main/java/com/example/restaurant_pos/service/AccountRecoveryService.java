@@ -3,6 +3,7 @@ package com.example.restaurant_pos.service;
 import com.example.restaurant_pos.model.User;
 import com.example.restaurant_pos.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -15,6 +16,9 @@ public class AccountRecoveryService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public AccountRecoveryService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -64,7 +68,7 @@ public class AccountRecoveryService {
             throw new RuntimeException("Recovery code not verified. Please verify the code first.");
         }
 
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         user.setRecoveryCode(null);
         user.setRecoveryVerified(false);
         userRepository.save(user);
