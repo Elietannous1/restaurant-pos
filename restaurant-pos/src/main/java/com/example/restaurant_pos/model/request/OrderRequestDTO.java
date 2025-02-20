@@ -1,6 +1,5 @@
 package com.example.restaurant_pos.model.request;
 
-import com.example.restaurant_pos.model.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

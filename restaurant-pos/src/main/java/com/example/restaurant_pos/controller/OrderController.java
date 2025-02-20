@@ -32,7 +32,8 @@ public class OrderController extends BaseController {
     @PostMapping("/create")
     @ResponseBody
     public Order createOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
-        return orderService.createOrder(orderRequestDTO);
+        OrderStatus status = validateOrderStatus(orderRequestDTO.getOrderStatus().toUpperCase());
+        return orderService.createOrder(status, orderRequestDTO);
     }
 
     @GetMapping("/date/day")

@@ -1,13 +1,11 @@
 package com.example.restaurant_pos.service;
 
-import com.example.restaurant_pos.model.Order;
-import com.example.restaurant_pos.model.OrderItem;
-import com.example.restaurant_pos.model.OrderStatus;
-import com.example.restaurant_pos.model.Product;
+import com.example.restaurant_pos.model.*;
 import com.example.restaurant_pos.model.request.OrderItemRequestDTO;
 import com.example.restaurant_pos.model.request.OrderRequestDTO;
 import com.example.restaurant_pos.repository.OrderRepository;
 import com.example.restaurant_pos.repository.ProductRepository;
+import com.example.restaurant_pos.repository.ProductSalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,9 @@ public class OrderService {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    ProductSalesRepository  productSalesRepository;
 
     public List<Order> getOrder(Integer id){
         List<Order> orders = new ArrayList<>();
@@ -116,12 +117,17 @@ public class OrderService {
         order.setTotalPrice(totalPrice);
         order.setOrderStatus(status);
 
+        if (status == OrderStatus.COMPLETED) {
+            updateProductSales(order);
+        }
+
         return orderRepository.save(order);
+
     }
 
 
 
-    public Order createOrder(OrderRequestDTO orderRequestDTO) {
+    public Order createOrder(OrderStatus status,OrderRequestDTO orderRequestDTO) {
         Order order = new Order();
         double totalPrice = 0.0;
         List<OrderItem> orderItems = new ArrayList<>();
@@ -145,6 +151,30 @@ public class OrderService {
         order.setOrderItems(orderItems);
         order.setOrderStatus(OrderStatus.PENDING);
 
+        if (status == OrderStatus.COMPLETED) {
+            updateProductSales(order);
+        }
+
         return orderRepository.save(order);
     }
+
+    private void updateProductSales(Order order) {
+        LocalDate today = LocalDate.now();
+
+        for (OrderItem item : order.getOrderItems()) {
+            productSalesRepository.findByProductIdAndSaleDate(item.getProduct().getId(), today)
+                    .ifPresentOrElse(
+                            productSales -> {
+                                productSales.setQuantitySold(productSales.getQuantitySold() + item.getQuantity());
+                                productSalesRepository.save(productSales);
+                            },
+                            () -> {
+                                // Using a constructor instead of builder
+                                ProductSales newSales = new ProductSales(item.getProduct(), today, item.getQuantity());
+                                productSalesRepository.save(newSales);
+                            }
+                    );
+        }
+    }
+
 }
