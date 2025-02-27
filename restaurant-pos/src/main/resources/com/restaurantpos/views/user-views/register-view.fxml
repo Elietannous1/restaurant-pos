@@ -4,21 +4,19 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/23.0.2" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.restaurant_pos.frontend.controller.LoginController"
+      fx:controller="com.example.restaurant_pos.frontend.controller.RegisterController"
       spacing="10" alignment="CENTER">
 
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
-    <Label text="Login" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <Label text="Register" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-    <TextField fx:id="usernameField" promptText="Enter username or email" maxWidth="250"/>
+    <TextField fx:id="usernameField" promptText="Enter username" maxWidth="250"/>
+    <TextField fx:id="emailField" promptText="Enter email" maxWidth="250"/>
     <PasswordField fx:id="passwordField" promptText="Enter password" maxWidth="250"/>
 
-    <Button text="Login" onAction="#loginUser" maxWidth="250"/>
+    <Button text="Register" onAction="#registerUser" maxWidth="250"/>
     <Label fx:id="errorLabel" textFill="red" visible="false"/>
-
-    <!-- Add the Go to Register button -->
-    <Button text="Go to Register" onAction="#goToRegisterView" maxWidth="250"/>
 </VBox>

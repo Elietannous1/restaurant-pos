@@ -1,17 +1,23 @@
 package com.example.restaurant_pos.frontend.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -76,7 +82,8 @@ public class LoginController {
             System.out.println("Error Message: " + e.getMessage());
 
             if (e.getStatusCode().value() == 403) {
-                errorLabel.setText("Forbidden: Access Denied!");
+                errorLabel.setTextFill(Color.RED);
+                errorLabel.setText("Wrong credentials!");
             } else if (e.getStatusCode().value() == 400) {
                 errorLabel.setText("Bad Request: Please check your credentials!");
             } else {
@@ -88,6 +95,25 @@ public class LoginController {
             // Handle other exceptions
             System.out.println("Error: " + e.getMessage());
             errorLabel.setText("Error connecting to server!");
+            errorLabel.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void goToRegisterView() {
+        try {
+            // Load the register view
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/user-views/register-view.fxml"));
+            VBox registerView = fxmlLoader.load();
+
+            // Create a new scene and set it in the stage
+            Scene scene = new Scene(registerView);
+            Stage stage = (Stage) errorLabel.getScene().getWindow(); // Get the current window
+            stage.setScene(scene);
+            stage.setTitle("Register");
+            stage.show();
+        } catch (IOException e) {
+            errorLabel.setText("Error loading Register view!");
             errorLabel.setVisible(true);
         }
     }
