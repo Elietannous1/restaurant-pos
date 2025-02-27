@@ -2,7 +2,6 @@ package com.example.restaurant_pos;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,21 +15,13 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage stage) throws Exception {
         // Create an FXMLLoader with the correct resource path
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/main-view.fxml"));
-
-        // Load the FXML file
-        Parent root = loader.load();
-
-        // Set the scene with the loaded root
-        primaryStage.setScene(new Scene(root));
-
-        // Set the title of the stage
-        primaryStage.setTitle("JavaFX & Spring Boot");
-
-        // Show the stage
-        primaryStage.show();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/user-views/login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setTitle("Restaurant POS - Login");
+        stage.setScene(scene);
+        stage.show();
     }
 
 
