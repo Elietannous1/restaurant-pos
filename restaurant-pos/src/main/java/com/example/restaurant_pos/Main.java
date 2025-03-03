@@ -19,6 +19,7 @@ public class Main extends Application {
         // Create an FXMLLoader with the correct resource path
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/user-views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/styles/login.css").toExternalForm());
         stage.setTitle("Restaurant POS - Login");
         stage.setScene(scene);
         stage.show();
