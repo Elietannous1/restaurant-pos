@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -74,10 +75,14 @@ public class LoginController {
                 TokenManager tokenManager = new TokenManager(jwtDTO.getToken(), jwtDTO.getRefreshToken());
                 System.out.println("Access Token: " + jwtDTO.getToken());
                 System.out.println("Refresh Token: " + jwtDTO.getRefreshToken());
+
                 // Successful login
                 errorLabel.setText("Login successful!");
                 errorLabel.setTextFill(Color.GREEN);
                 errorLabel.setVisible(true);
+
+                //Redirect the user to the dashboard
+                redirectToDashboard();
             } else {
                 // Handle non-2xx status codes
                 errorLabel.setText("Invalid credentials!");
@@ -126,4 +131,22 @@ public class LoginController {
             errorLabel.setVisible(true);
         }
     }
+
+    private void redirectToDashboard() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/user-views/main-views/dashboard-view.fxml"));
+            BorderPane dashboardView = fxmlLoader.load();
+
+            Scene scene = new Scene(dashboardView);
+            scene.getStylesheets().add(getClass().getResource("/Styles/main-dashboard.css").toExternalForm());
+            Stage stage = (Stage) errorLabel.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Dashboard");
+            stage.show();
+        } catch (IOException e) {
+            errorLabel.setText("Error loading Dashboard!");
+            errorLabel.setVisible(true);
+        }
+    }
+
 }

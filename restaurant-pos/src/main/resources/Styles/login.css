@@ -1,33 +1,33 @@
-.login-container {
-    -fx-background-color: linear-gradient(to bottom, #46211A, #A43820);
-    -fx-padding: 30px;
-    -fx-background-radius: 10;
-}
+    .login-container {
+        -fx-background-color: linear-gradient(to bottom, #46211A, #A43820);
+        -fx-padding: 30px;
+        -fx-background-radius: 10;
+    }
 
-.login-title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #F1D3B2;
-}
+    .login-title {
+        -fx-font-size: 24px;
+        -fx-font-weight: bold;
+        -fx-text-fill: #F1D3B2;
+    }
 
-.input-field {
-    -fx-background-color: #F1D3B2;
-    -fx-border-color: #A43820;
-    -fx-border-radius: 5;
-    -fx-padding: 5px;
-}
+    .input-field {
+        -fx-background-color: #F1D3B2;
+        -fx-border-color: #A43820;
+        -fx-border-radius: 5;
+        -fx-padding: 5px;
+    }
 
-.login-button {
-    -fx-background-color: #A43820;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-border-radius: 5;
-}
+    .login-button {
+        -fx-background-color: #A43820;
+        -fx-text-fill: white;
+        -fx-font-size: 14px;
+        -fx-border-radius: 5;
+    }
 
-.register-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #F1D3B2;
-    -fx-font-size: 14px;
-    -fx-border-color: #F1D3B2;
-    -fx-border-radius: 5;
-}
+    .register-button {
+        -fx-background-color: transparent;
+        -fx-text-fill: #F1D3B2;
+        -fx-font-size: 14px;
+        -fx-border-color: #F1D3B2;
+        -fx-border-radius: 5;
+    }

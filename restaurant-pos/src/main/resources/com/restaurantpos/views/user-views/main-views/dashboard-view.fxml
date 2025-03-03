@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.restaurant_pos.frontend.controller.MainController">
+
+    <!-- Sidebar with buttons -->
+    <VBox spacing="10" styleClass="sidebar" BorderPane.alignment="TOP_LEFT">
+        <Button fx:id="btnFeature1" text="Feature 1" styleClass="sidebar-button"/>
+        <Button fx:id="btnFeature2" text="Feature 2" styleClass="sidebar-button"/>
+        <Button fx:id="btnFeature3" text="Feature 3" styleClass="sidebar-button"/>
+        <Button fx:id="btnFeature4" text="Feature 4" styleClass="sidebar-button"/>
+        <Button fx:id="btnFeature5" text="Feature 5" styleClass="sidebar-button"/>
+    </VBox>
+
+    <!-- Main content area where different views will be loaded -->
+    <StackPane fx:id="contentArea" styleClass="content-area" BorderPane.alignment="CENTER">
+        <Label text="Welcome to the Main Page" styleClass="welcome-text"/>
+    </StackPane>
+
+</BorderPane>
