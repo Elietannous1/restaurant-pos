@@ -28,8 +28,6 @@ public class JwtService {
     private long refreshExpiration;  // Now it's a long
 
 
-
-
     public JwtService(){}
 
     public String extractUsername(String token) {

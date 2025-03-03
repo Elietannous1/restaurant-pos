@@ -1,5 +1,7 @@
 package com.example.restaurant_pos.frontend.controller;
 
+import com.example.restaurant_pos.frontend.controller.utils.TokenManager;
+import com.example.restaurant_pos.model.request.JwtDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -63,9 +66,14 @@ public class LoginController {
 
         try {
             // Send POST request
-            ResponseEntity<String> response = restTemplate.postForEntity(LOGIN_URL, request, String.class);
+            ResponseEntity<JwtDTO> response = restTemplate.postForEntity(LOGIN_URL, request, JwtDTO.class);
 
             if (response.getStatusCode().is2xxSuccessful()) {
+                JwtDTO jwtDTO = response.getBody();
+
+                TokenManager tokenManager = new TokenManager(jwtDTO.getToken(), jwtDTO.getRefreshToken());
+                System.out.println("Access Token: " + jwtDTO.getToken());
+                System.out.println("Refresh Token: " + jwtDTO.getRefreshToken());
                 // Successful login
                 errorLabel.setText("Login successful!");
                 errorLabel.setTextFill(Color.GREEN);
@@ -104,10 +112,11 @@ public class LoginController {
         try {
             // Load the register view
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/user-views/register-view.fxml"));
-            VBox registerView = fxmlLoader.load();
+            StackPane registerView = fxmlLoader.load();
 
             // Create a new scene and set it in the stage
             Scene scene = new Scene(registerView);
+            scene.getStylesheets().add(getClass().getResource("/styles/register.css").toExternalForm());
             Stage stage = (Stage) errorLabel.getScene().getWindow(); // Get the current window
             stage.setScene(scene);
             stage.setTitle("Register");

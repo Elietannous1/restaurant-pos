@@ -1,0 +1,25 @@
+.register-container {
+    -fx-background-color: linear-gradient(to bottom, #46211A, #A43820);
+    -fx-padding: 30px;
+    -fx-background-radius: 10;
+}
+
+.register-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #F1D3B2;
+}
+
+.input-field {
+    -fx-background-color: #F1D3B2;
+    -fx-border-color: #A43820;
+    -fx-border-radius: 5;
+    -fx-padding: 5px;
+}
+
+.register-button {
+    -fx-background-color: #A43820;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5;
+}

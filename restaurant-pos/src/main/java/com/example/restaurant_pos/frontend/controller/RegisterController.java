@@ -1,5 +1,7 @@
 package com.example.restaurant_pos.frontend.controller;
 
+import com.example.restaurant_pos.frontend.controller.utils.TokenManager;
+import com.example.restaurant_pos.model.request.JwtDTO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -58,9 +60,11 @@ public class RegisterController {
 
         try {
             // Send POST request to the backend
-            ResponseEntity<String> response = restTemplate.postForEntity(REGISTER_URL, request, String.class);
+            ResponseEntity<JwtDTO> response = restTemplate.postForEntity(REGISTER_URL, request, JwtDTO.class);
 
             if (response.getStatusCode().is2xxSuccessful()) {
+                JwtDTO jwtDTO = response.getBody();
+                TokenManager tokenManager = new TokenManager(jwtDTO.getToken(), jwtDTO.getRefreshToken());
                 // Registration successful
                 errorLabel.setText("Registration successful!");
                 errorLabel.setTextFill(Color.GREEN);
