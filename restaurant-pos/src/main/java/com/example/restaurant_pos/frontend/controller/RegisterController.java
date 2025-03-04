@@ -1,5 +1,7 @@
 package com.example.restaurant_pos.frontend.controller;
 
+import com.example.restaurant_pos.frontend.controller.utils.ScenePaths;
+import com.example.restaurant_pos.frontend.controller.utils.SceneSwitcher;
 import com.example.restaurant_pos.frontend.controller.utils.TokenManager;
 import com.example.restaurant_pos.model.request.JwtDTO;
 import javafx.fxml.FXML;
@@ -8,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -69,6 +72,10 @@ public class RegisterController {
                 errorLabel.setText("Registration successful!");
                 errorLabel.setTextFill(Color.GREEN);
                 errorLabel.setVisible(true);
+
+                Stage stage = (Stage) errorLabel.getScene().getWindow();
+
+                SceneSwitcher.switchScene(stage, ScenePaths.DASHBOARD_VIEW, ScenePaths.DASHBOARD_CSS);
             } else {
                 // Handle other non-2xx statuses (e.g., 400 Bad Request)
                 errorLabel.setText("Registration failed: " + response.getBody());

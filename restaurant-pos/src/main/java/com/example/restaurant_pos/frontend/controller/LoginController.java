@@ -1,17 +1,14 @@
 package com.example.restaurant_pos.frontend.controller;
 
+import com.example.restaurant_pos.frontend.controller.utils.ScenePaths;
+import com.example.restaurant_pos.frontend.controller.utils.SceneSwitcher;
 import com.example.restaurant_pos.frontend.controller.utils.TokenManager;
 import com.example.restaurant_pos.model.request.JwtDTO;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.springframework.http.HttpEntity;
@@ -21,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 
 public class LoginController {
 
@@ -82,7 +78,8 @@ public class LoginController {
                 errorLabel.setVisible(true);
 
                 //Redirect the user to the dashboard
-                redirectToDashboard();
+                Stage stage = (Stage) errorLabel.getScene().getWindow();
+                SceneSwitcher.switchScene(stage, ScenePaths.DASHBOARD_VIEW, ScenePaths.DASHBOARD_CSS);
             } else {
                 // Handle non-2xx status codes
                 errorLabel.setText("Invalid credentials!");
@@ -114,39 +111,7 @@ public class LoginController {
 
     @FXML
     private void goToRegisterView() {
-        try {
-            // Load the register view
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/user-views/register-view.fxml"));
-            StackPane registerView = fxmlLoader.load();
-
-            // Create a new scene and set it in the stage
-            Scene scene = new Scene(registerView);
-            scene.getStylesheets().add(getClass().getResource("/styles/register.css").toExternalForm());
-            Stage stage = (Stage) errorLabel.getScene().getWindow(); // Get the current window
-            stage.setScene(scene);
-            stage.setTitle("Register");
-            stage.show();
-        } catch (IOException e) {
-            errorLabel.setText("Error loading Register view!");
-            errorLabel.setVisible(true);
-        }
+        Stage stage = (Stage) errorLabel.getScene().getWindow();
+        SceneSwitcher.switchScene(stage, ScenePaths.REGISTER_VIEW, ScenePaths.REGISTER_CSS);
     }
-
-    private void redirectToDashboard() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/restaurantpos/views/user-views/main-views/dashboard-view.fxml"));
-            BorderPane dashboardView = fxmlLoader.load();
-
-            Scene scene = new Scene(dashboardView);
-            scene.getStylesheets().add(getClass().getResource("/Styles/main-dashboard.css").toExternalForm());
-            Stage stage = (Stage) errorLabel.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Dashboard");
-            stage.show();
-        } catch (IOException e) {
-            errorLabel.setText("Error loading Dashboard!");
-            errorLabel.setVisible(true);
-        }
-    }
-
 }
