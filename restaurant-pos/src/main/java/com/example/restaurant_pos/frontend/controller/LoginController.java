@@ -68,7 +68,8 @@ public class LoginController {
             if (response.getStatusCode().is2xxSuccessful()) {
                 JwtDTO jwtDTO = response.getBody();
 
-                TokenManager tokenManager = new TokenManager(jwtDTO.getToken(), jwtDTO.getRefreshToken());
+                TokenManager.getInstance().setToken(jwtDTO.getToken());
+                TokenManager.getInstance().setRefreshToken(jwtDTO.getRefreshToken());
                 System.out.println("Access Token: " + jwtDTO.getToken());
                 System.out.println("Refresh Token: " + jwtDTO.getRefreshToken());
 

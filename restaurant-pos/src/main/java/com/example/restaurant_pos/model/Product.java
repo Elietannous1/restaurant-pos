@@ -1,6 +1,7 @@
 package com.example.restaurant_pos.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -19,6 +20,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnore
     private Category category;
 
     public Product(String productName, double price, String description, boolean isAvailable, Category category){

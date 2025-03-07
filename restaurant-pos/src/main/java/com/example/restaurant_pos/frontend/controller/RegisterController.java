@@ -67,7 +67,8 @@ public class RegisterController {
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 JwtDTO jwtDTO = response.getBody();
-                TokenManager tokenManager = new TokenManager(jwtDTO.getToken(), jwtDTO.getRefreshToken());
+                TokenManager.getInstance().setToken(jwtDTO.getToken());
+                TokenManager.getInstance().setRefreshToken(jwtDTO.getRefreshToken());
                 // Registration successful
                 errorLabel.setText("Registration successful!");
                 errorLabel.setTextFill(Color.GREEN);

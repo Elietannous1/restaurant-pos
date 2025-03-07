@@ -1,22 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.2" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.restaurant_pos.frontend.controller.MainController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.restaurant_pos.frontend.controller.MainController"
+            prefWidth="1000" prefHeight="600">
 
-    <!-- Sidebar with buttons -->
-    <VBox spacing="10" styleClass="sidebar" BorderPane.alignment="TOP_LEFT">
-        <Button fx:id="btnFeature1" text="Feature 1" styleClass="sidebar-button"/>
-        <Button fx:id="btnFeature2" text="Feature 2" styleClass="sidebar-button"/>
-        <Button fx:id="btnFeature3" text="Feature 3" styleClass="sidebar-button"/>
-        <Button fx:id="btnFeature4" text="Feature 4" styleClass="sidebar-button"/>
-        <Button fx:id="btnFeature5" text="Feature 5" styleClass="sidebar-button"/>
-    </VBox>
+    <!-- LEFT: Sidebar -->
+    <left>
+        <VBox spacing="10" styleClass="sidebar">
+            <Button fx:id="btnFeature1" text="Feature 1" styleClass="sidebar-button"/>
+            <Button fx:id="btnFeature2" text="Feature 2" styleClass="sidebar-button"/>
+            <Button fx:id="btnFeature3" text="Feature 3" styleClass="sidebar-button"/>
+            <Button fx:id="btnFeature4" text="Feature 4" styleClass="sidebar-button"/>
+            <Button fx:id="btnFeature5" text="Feature 5" styleClass="sidebar-button"/>
+        </VBox>
+    </left>
 
-    <!-- Main content area where different views will be loaded -->
-    <StackPane fx:id="contentArea" styleClass="content-area" BorderPane.alignment="CENTER">
-        <Label text="Welcome to the Main Page" styleClass="welcome-text"/>
-    </StackPane>
+    <!-- CENTER: Main Content Area -->
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <Label text="Welcome to the Main Page" styleClass="welcome-text"/>
+        </StackPane>
+    </center>
+
+    <!-- BOTTOM: BarChart Container -->
+    <bottom>
+        <VBox fx:id="barChartContainer" spacing="10" alignment="CENTER"
+              prefHeight="300" maxWidth="Infinity">
+
+            <!-- Time Filter ComboBox -->
+            <ComboBox fx:id="cbTimeFilter" styleClass="combo-box" maxWidth="Infinity" />
+
+            <!-- BarChart filling the remaining space in the VBox -->
+            <BarChart fx:id="barChart" title="Top Selling Items"
+                      VBox.vgrow="ALWAYS"
+                      maxWidth="Infinity"
+                      maxHeight="Infinity"
+                      styleClass="bar-chart">
+                <xAxis>
+                    <CategoryAxis label="Item"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Sales Quantity"/>
+                </yAxis>
+            </BarChart>
+        </VBox>
+    </bottom>
 
 </BorderPane>

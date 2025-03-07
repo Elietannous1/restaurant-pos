@@ -74,3 +74,50 @@
 .button:hover {
     -fx-background-color: #46211A;
 }
+
+/* Styling for the ComboBox */
+.combo-box {
+    -fx-background-color: #F1D3B2;
+    -fx-border-color: #A43820;
+    -fx-border-radius: 5;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+/* The bottom VBox container */
+#barChartContainer {
+    -fx-padding: 10;
+    -fx-background-color: #F1D3B2;
+    -fx-background-radius: 10;
+    /* prefHeight is already set to 300 in the FXML, so no need here */
+}
+
+/* The BarChart itself */
+.bar-chart {
+    -fx-background-color: #F1D3B2;
+    -fx-pref-width: 100%;
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+    /* Do NOT set -fx-pref-height here */
+}
+
+
+/* Styling for the axis labels */
+.category-axis .axis-label,
+.number-axis .axis-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #46211A;
+}
+
+/* Styling for the chart title */
+.chart-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #46211A;
+}
+
+/* Hover effect for ComboBox */
+.combo-box:hover {
+    -fx-background-color: #A43820;
+}
