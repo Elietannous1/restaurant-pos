@@ -19,6 +19,30 @@
         </VBox>
     </left>
 
+    <!-- TOP: LineChart for Total Sales Over Time -->
+    <top>
+        <VBox fx:id="lineChartContainer" spacing="10" alignment="CENTER"
+              prefHeight="300" maxWidth="Infinity">
+
+            <!-- Chart Title -->
+            <Label text="Total Sales Over Time" styleClass="chart-title"/>
+
+            <!-- LineChart -->
+            <LineChart fx:id="lineChart" title="Sales Trend"
+                       VBox.vgrow="ALWAYS"
+                       maxWidth="Infinity"
+                       maxHeight="Infinity"
+                       styleClass="line-chart">
+                <xAxis>
+                    <CategoryAxis label="Time Period"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Total Sales"/>
+                </yAxis>
+            </LineChart>
+        </VBox>
+    </top>
+
     <!-- CENTER: Main Content Area -->
     <center>
         <StackPane fx:id="contentArea" styleClass="content-area">

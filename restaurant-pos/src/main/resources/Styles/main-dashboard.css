@@ -43,7 +43,7 @@
 .welcome-text {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #46211A;
+    -fx-text-fill: white;
     -fx-alignment: center;
 }
 
