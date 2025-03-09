@@ -32,6 +32,9 @@ public class MainController {
     private ComboBox<String> cbTimeFilter;
 
     @FXML
+    private ComboBox<String> cbLineChartTimeFilter;
+
+    @FXML
     private BarChart<String, Number> barChart;
 
     // Make sure the type here is VBox since our FXML uses a VBox for the bottom container.
@@ -52,6 +55,10 @@ public class MainController {
         cbTimeFilter.getItems().clear();
         cbTimeFilter.getItems().addAll("Daily", "Weekly", "Monthly");
         cbTimeFilter.setValue("Daily");
+
+        cbLineChartTimeFilter.getItems().clear();
+        cbLineChartTimeFilter.getItems().addAll("Daily", "Weekly", "Monthly");
+        cbLineChartTimeFilter.setValue("Daily");
 
         // Fetch products from the API and update the chart
         fetchProductNames();

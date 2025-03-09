@@ -24,6 +24,10 @@
         <VBox fx:id="lineChartContainer" spacing="10" alignment="CENTER"
               prefHeight="300" maxWidth="Infinity">
 
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <ComboBox fx:id="cbLineChartTimeFilter" styleClass="combo-box" maxWidth="200"/>
+            </HBox>
+
             <!-- Chart Title -->
             <Label text="Total Sales Over Time" styleClass="chart-title"/>
 

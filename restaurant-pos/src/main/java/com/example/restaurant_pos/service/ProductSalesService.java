@@ -14,9 +14,15 @@ public class ProductSalesService {
     @Autowired
     private ProductSalesRepository productSalesRepository;
 
-    public List<ProductSales> getSalesByDate(LocalDate date) {
+    public List<ProductSales> getSalesByDate(LocalDate startDate, LocalDate endDate) {
+        LocalDate finalEndDate;
+        if (endDate == null) {
+            finalEndDate = startDate;
+        } else {
+            finalEndDate = endDate;
+        }
         return productSalesRepository.findAll().stream()
-                .filter(sales -> sales.getSaleDate().equals(date))
+                .filter(sales -> !sales.getSaleDate().isBefore(startDate) && !sales.getSaleDate().isAfter(finalEndDate))
                 .toList();
     }
 

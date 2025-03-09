@@ -22,9 +22,11 @@ public class ProductSalesController {
 
     @GetMapping("/daily")
     @ResponseBody
-    public List<ProductSales> getSalesByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return productSalesService.getSalesByDate(date);
+    public List<ProductSales> getSalesByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return productSalesService.getSalesByDate(startDate, endDate);
     }
+
 
     @GetMapping("/top-selling")
     @ResponseBody
