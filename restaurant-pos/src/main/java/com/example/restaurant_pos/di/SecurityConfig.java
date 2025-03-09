@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers(POST, "/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name())
+                                //.requestMatchers(POST, "/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name())
                                 .anyRequest()
                                 .authenticated()
                 )

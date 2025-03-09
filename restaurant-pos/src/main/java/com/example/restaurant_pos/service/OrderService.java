@@ -149,7 +149,7 @@ public class OrderService {
         order.setOrderDate(orderRequestDTO.getOrderDate());
         order.setTotalPrice(totalPrice);
         order.setOrderItems(orderItems);
-        order.setOrderStatus(OrderStatus.PENDING);
+        order.setOrderStatus(status);
 
         if (status == OrderStatus.COMPLETED) {
             updateProductSales(order);
