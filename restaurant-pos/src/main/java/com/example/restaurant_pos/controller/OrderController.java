@@ -3,6 +3,7 @@ package com.example.restaurant_pos.controller;
 import com.example.restaurant_pos.model.Order;
 import com.example.restaurant_pos.model.OrderStatus;
 import com.example.restaurant_pos.model.request.OrderRequestDTO;
+import com.example.restaurant_pos.model.response.OrderResponseDTO;
 import com.example.restaurant_pos.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class OrderController extends BaseController {
 
     @GetMapping("")
     @ResponseBody
-    public List<Order> getAllOrders(@RequestParam(required = false) Integer id){
+    public List<OrderResponseDTO> getAllOrders(@RequestParam(required = false) Integer id){
         return orderService.getOrder(id);
     }
 

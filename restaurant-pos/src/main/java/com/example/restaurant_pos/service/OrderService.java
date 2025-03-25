@@ -3,11 +3,12 @@ package com.example.restaurant_pos.service;
 import com.example.restaurant_pos.model.*;
 import com.example.restaurant_pos.model.request.OrderItemRequestDTO;
 import com.example.restaurant_pos.model.request.OrderRequestDTO;
+import com.example.restaurant_pos.model.response.OrderItemResponseDTO;
+import com.example.restaurant_pos.model.response.OrderResponseDTO;
 import com.example.restaurant_pos.repository.OrderRepository;
 import com.example.restaurant_pos.repository.ProductRepository;
 import com.example.restaurant_pos.repository.ProductSalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -26,16 +28,48 @@ public class OrderService {
     OrderRepository orderRepository;
 
     @Autowired
+    ProductService  productService;
+
+    @Autowired
     ProductSalesRepository  productSalesRepository;
 
-    public List<Order> getOrder(Integer id){
+    public List<OrderResponseDTO> getOrder(Integer id) {
         List<Order> orders = new ArrayList<>();
-        if(id == null) {
-            return orderRepository.findAll();
+        if (id == null) {
+            orders = orderRepository.findAll();
         } else {
-            orders.add(orderRepository.findById(id).get());
-            return orders;
+            Optional<Order> optionalOrder = orderRepository.findById(id);
+            if (optionalOrder.isPresent()) {
+                orders.add(optionalOrder.get());
+            }
         }
+        // Convert each Order entity to a DTO enriched with product details
+        List<OrderResponseDTO> responseList = new ArrayList<>();
+        for (Order order : orders) {
+            OrderResponseDTO orderDTO = new OrderResponseDTO();
+            orderDTO.setOrderId(order.getOrderId());
+            orderDTO.setOrderDate(order.getOrderDate());
+            orderDTO.setTotalPrice(order.getTotalPrice());
+            orderDTO.setOrderStatus(String.valueOf(order.getOrderStatus()));
+
+            List<OrderItemResponseDTO> itemDTOs = new ArrayList<>();
+            for (OrderItem item : order.getOrderItems()) {
+                OrderItemResponseDTO itemDTO = new OrderItemResponseDTO();
+                itemDTO.setOrderItemId(item.getOrderItemId());
+                itemDTO.setProductId(item.getProduct().getId());
+                itemDTO.setQuantity(item.getQuantity());
+                // Call productService to get product details
+                Product product = productService.getProductById(item.getProduct().getId());
+                if (product != null) {
+                    itemDTO.setProductName(product.getProductName());
+                    itemDTO.setPrice(product.getPrice());
+                }
+                itemDTOs.add(itemDTO);
+            }
+            orderDTO.setOrderItems(itemDTOs);
+            responseList.add(orderDTO);
+        }
+        return responseList;
     }
 
     public List<Order> getOrdersByDay(LocalDate date){
@@ -86,7 +120,7 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        if (order.getOrderStatus() == OrderStatus.COMPLETED) {
+        if (order.getOrderStatus()== OrderStatus.COMPLETED) {
             throw new RuntimeException("Cannot update a completed order.");
         }
 
