@@ -120,7 +120,7 @@ public class OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        if (order.getOrderStatus()== OrderStatus.COMPLETED) {
+        if (order.getOrderStatus() == OrderStatus.COMPLETED) {
             throw new RuntimeException("Cannot update a completed order.");
         }
 
@@ -128,27 +128,34 @@ public class OrderService {
             throw new RuntimeException("Cannot update a cancelled order.");
         }
 
-        // Update Order Items
-        List<OrderItem> updatedOrderItems = new ArrayList<>();
-        double totalPrice = 0.0;
+        // If order items are provided in the request, update them along with total price and order date.
+        if (orderRequestDTO.getOrderItems() != null && !orderRequestDTO.getOrderItems().isEmpty()) {
+            List<OrderItem> updatedOrderItems = new ArrayList<>();
+            double totalPrice = 0.0;
 
-        for (OrderItemRequestDTO itemDTO : orderRequestDTO.getOrderItems()) {
-            Product product = productRepository.findById(itemDTO.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
+            for (OrderItemRequestDTO itemDTO : orderRequestDTO.getOrderItems()) {
+                Product product = productRepository.findById(itemDTO.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Product not found"));
 
-            double itemTotal = product.getPrice() * itemDTO.getQuantity();
-            totalPrice += itemTotal;
+                double itemTotal = product.getPrice() * itemDTO.getQuantity();
+                totalPrice += itemTotal;
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
-            orderItem.setQuantity(itemDTO.getQuantity());
-            orderItem.setOrder(order);
+                OrderItem orderItem = new OrderItem();
+                orderItem.setProduct(product);
+                orderItem.setQuantity(itemDTO.getQuantity());
+                orderItem.setOrder(order);
 
-            updatedOrderItems.add(orderItem);
+                updatedOrderItems.add(orderItem);
+            }
+            order.setOrderItems(updatedOrderItems);
+            order.setTotalPrice(totalPrice);
+            // Optionally update the order date if provided
+            if(orderRequestDTO.getOrderDate() != null){
+                order.setOrderDate(orderRequestDTO.getOrderDate());
+            }
         }
-        order.setOrderDate(orderRequestDTO.getOrderDate());
-        order.setOrderItems(updatedOrderItems);
-        order.setTotalPrice(totalPrice);
+
+        // Always update the status, regardless of whether order items were provided.
         order.setOrderStatus(status);
 
         if (status == OrderStatus.COMPLETED) {
@@ -156,8 +163,8 @@ public class OrderService {
         }
 
         return orderRepository.save(order);
-
     }
+
 
 
 
