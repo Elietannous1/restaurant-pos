@@ -6,6 +6,7 @@ import com.example.restaurant_pos.model.response.ProductResponseDTO;
 import com.example.restaurant_pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,12 @@ public class ProductController {
     @ResponseBody
     public String removeProduct(@RequestParam Integer id) {
         return productService.removeProduct(id);
+    }
+
+    @PutMapping("/update")
+    @ResponseBody
+    public Product updateProduct(@RequestParam Integer id,@RequestBody ProductRequestDTO productRequestDTO) {
+        return productService.updateProduct(id, productRequestDTO);
     }
 
 }

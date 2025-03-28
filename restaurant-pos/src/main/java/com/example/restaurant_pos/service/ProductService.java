@@ -44,7 +44,7 @@ public class ProductService {
         Category category = categoryRepository.findById(productRequestDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        Product product = new Product(productRequestDTO.getName(), productRequestDTO.getPrice(),
+        Product product = new Product(productRequestDTO.getProductName(), productRequestDTO.getPrice(),
                 productRequestDTO.getDescription(), productRequestDTO.isAvailable(), category);
 
         return productRepository.save(product);
@@ -58,5 +58,20 @@ public class ProductService {
             return "Product removed successfully";
         }
         return "Product not found";
+    }
+
+    public Product updateProduct(Integer id, ProductRequestDTO productRequestDTO) {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isPresent()) {
+            Category category = categoryRepository.findById(productRequestDTO.getCategoryId()).get();
+            product.get().setProductName(productRequestDTO.getProductName());
+            product.get().setPrice(productRequestDTO.getPrice());
+            product.get().setDescription(productRequestDTO.getDescription());
+            product.get().setCategory(category);
+            product.get().setAvailable(productRequestDTO.isAvailable());
+            productRepository.save(product.get());
+            return product.get();
+        }
+        return null;
     }
 }
