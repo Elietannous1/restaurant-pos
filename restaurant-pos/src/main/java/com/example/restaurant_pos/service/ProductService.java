@@ -3,6 +3,7 @@ package com.example.restaurant_pos.service;
 import com.example.restaurant_pos.model.Category;
 import com.example.restaurant_pos.model.Product;
 import com.example.restaurant_pos.model.request.ProductRequestDTO;
+import com.example.restaurant_pos.model.response.ProductResponseDTO;
 import com.example.restaurant_pos.repository.CategoryRepository;
 import com.example.restaurant_pos.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -20,11 +22,21 @@ public class ProductService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponseDTO> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(product -> new ProductResponseDTO(
+                        product.getId(),
+                        product.getProductName(),
+                        product.getPrice(),
+                        product.getDescription(),
+                        product.isAvailable(),
+                        product.getCategory() != null ? product.getCategory().getCategoryName() : null
+                ))
+                .collect(Collectors.toList());
     }
 
-    public Product getProductById(Integer id) {
+    public Product getProductById(long id) {
         return productRepository.findById(id).get();
     }
 

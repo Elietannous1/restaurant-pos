@@ -2,6 +2,7 @@ package com.example.restaurant_pos.controller;
 
 import com.example.restaurant_pos.model.Product;
 import com.example.restaurant_pos.model.request.ProductRequestDTO;
+import com.example.restaurant_pos.model.response.ProductResponseDTO;
 import com.example.restaurant_pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ public class ProductController {
 
     @GetMapping("")
     @ResponseBody
-    public List<Product> getProducts() {
+    public List<ProductResponseDTO> getProducts() {
         return productService.getAllProducts();
     }
 

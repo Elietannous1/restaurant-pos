@@ -2,7 +2,7 @@ package com.example.restaurant_pos.model.response;
 
 public class OrderItemResponseDTO {
     private Long orderItemId;
-    private int productId;
+    private long productId;
     private String productName;
     private Double price;
     private int quantity;
@@ -15,11 +15,11 @@ public class OrderItemResponseDTO {
         this.orderItemId = orderItemId;
     }
 
-    public int getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(long productId) {
         this.productId = productId;
     }
 
