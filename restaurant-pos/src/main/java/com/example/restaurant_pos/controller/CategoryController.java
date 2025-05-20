@@ -35,6 +35,12 @@ public class CategoryController {
         return categoryService.createCategory(categoryRequestDTO);
     }
 
+    @PutMapping("/update")
+    @ResponseBody
+    public Category updateCategory(@RequestParam int id, @RequestBody CategoryRequestDTO categoryRequestDTO) {
+        return categoryService.updateCategory(id, categoryRequestDTO);
+    }
+
     @PostMapping("/delete/")
     @ResponseBody
     public String deleteCategory(@RequestParam Integer id) {

@@ -42,4 +42,15 @@ public class CategoryService {
         List<Product> products = category.getProducts();
         return products;
     }
+
+    public Category updateCategory(int id, CategoryRequestDTO dto) {
+        // Fetch existing entity
+        Category existing = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with id " + id));
+        // Apply updates
+        existing.setCategoryName(dto.getCategoryName());
+        existing.setDescription(dto.getDescription());
+        // Persist and return
+        return categoryRepository.save(existing);
+    }
 }
